@@ -1,0 +1,125 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+/* Warna diambil dari logo STAI Morowali: hijau (#009048) dan kuning emas. */
+@theme {
+  --color-brand-50: #ebf9f1;
+  --color-brand-100: #cef1dd;
+  --color-brand-200: #a0e2c0;
+  --color-brand-300: #66cc9a;
+  --color-brand-400: #2fb174;
+  --color-brand-500: #009652;
+  --color-brand-600: #007f45;
+  --color-brand-700: #006638;
+  --color-brand-800: #00512e;
+  --color-brand-900: #003f25;
+  --color-brand-950: #002516;
+
+  --color-gold-50: #fefce8;
+  --color-gold-100: #fdf8c4;
+  --color-gold-200: #fbef8c;
+  --color-gold-300: #f8e24c;
+  --color-gold-400: #f2d01a;
+  --color-gold-500: #dbb40d;
+  --color-gold-600: #b48a08;
+  --color-gold-700: #8f650b;
+
+  --color-paper: #fbfaf6;
+}
+
+@theme inline {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 7rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-paper text-stone-800 antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply text-balance;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand-600;
+  }
+
+  ::selection {
+    @apply bg-gold-200 text-brand-950;
+  }
+}
+
+@utility container-site {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 80rem;
+  padding-inline: 1rem;
+
+  @media (width >= 40rem) {
+    padding-inline: 1.5rem;
+  }
+
+  @media (width >= 64rem) {
+    padding-inline: 2rem;
+  }
+}
+
+/* Motif bintang delapan (dua persegi bertumpuk) untuk latar bernuansa Islami. */
+@utility bg-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='white' stroke-opacity='0.08' stroke-width='1.2'%3E%3Crect x='20' y='20' width='24' height='24'/%3E%3Crect x='20' y='20' width='24' height='24' transform='rotate(45 32 32)'/%3E%3Ccircle cx='32' cy='32' r='5'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors disabled:pointer-events-none disabled:opacity-60;
+  }
+
+  .btn-primary {
+    @apply bg-brand-700 text-white hover:bg-brand-800;
+  }
+
+  .btn-gold {
+    @apply bg-gold-400 text-brand-950 hover:bg-gold-300;
+  }
+
+  .btn-outline {
+    @apply border border-brand-700 text-brand-800 hover:bg-brand-50;
+  }
+
+  .btn-outline-light {
+    @apply border border-white/50 text-white hover:bg-white/10;
+  }
+
+  .card {
+    @apply rounded-xl border border-stone-200 bg-white shadow-sm;
+  }
+
+  .eyebrow {
+    @apply text-xs font-semibold tracking-[0.14em] text-brand-700 uppercase;
+  }
+
+  .form-label {
+    @apply mb-1.5 block text-sm font-medium text-stone-700;
+  }
+
+  .form-input {
+    @apply block w-full rounded-lg border border-stone-300 bg-white px-3.5 py-2.5 text-sm text-stone-900 shadow-xs placeholder:text-stone-400 focus:border-brand-600 focus:ring-2 focus:ring-brand-600/20 focus:outline-none aria-invalid:border-red-500;
+  }
+
+  .form-error {
+    @apply mt-1.5 text-sm text-red-700;
+  }
+}

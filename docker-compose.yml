@@ -1,0 +1,48 @@
+# Opsional — untuk yang memakai Docker.
+#
+#   docker compose up -d db                 # PostgreSQL saja (alternatif `pnpm db:start`)
+#   docker compose --profile prod up -d     # PostgreSQL + website versi produksi
+#
+# Compose membaca .env di folder ini. Bila memakai service `db`, isi POSTGRES_PASSWORD
+# dengan password yang sama seperti di DATABASE_URL (user stai, port 5433).
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: stai_morowali
+      POSTGRES_USER: stai
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ganti_password_ini}
+    ports:
+      - '127.0.0.1:5433:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U stai -d stai_morowali']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  web:
+    profiles: ['prod']
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL:-http://localhost:3000}
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://stai:${POSTGRES_PASSWORD:-ganti_password_ini}@db:5432/stai_morowali
+      PAYLOAD_SECRET: ${PAYLOAD_SECRET:?PAYLOAD_SECRET wajib diisi}
+      NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL:-http://localhost:3000}
+    ports:
+      - '127.0.0.1:3000:3000'
+    volumes:
+      - media:/app/media
+
+volumes:
+  pgdata:
+  media:

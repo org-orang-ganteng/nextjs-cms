@@ -1,0 +1,88 @@
+import { getPayload, Payload } from 'payload'
+import config from '@/payload.config'
+
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+
+let payload: Payload
+let programId: number
+const created: Array<{
+  collection: 'pages' | 'pmb-registrations' | 'posts' | 'programs'
+  id: number
+}> = []
+
+const registrationData = (nik: string) => ({
+  address: 'Jalan Uji Coba No. 1, Bungku',
+  birthDate: '2007-01-01T00:00:00.000Z',
+  birthPlace: 'Bungku',
+  firstChoice: programId,
+  fullName: 'Calon Mahasiswa Uji',
+  gender: 'L' as const,
+  graduationYear: 2026,
+  nik,
+  phone: '081234567890',
+  schoolOrigin: 'MA Uji',
+  status: 'baru' as const,
+})
+
+describe('Model konten STAI Morowali', () => {
+  beforeAll(async () => {
+    payload = await getPayload({ config: await config })
+    const program = await payload.create({
+      collection: 'programs',
+      data: { code: 'UJI', degree: 'S1', name: 'Program Studi Uji', slug: 'uji-integrasi' },
+    })
+    programId = program.id
+    created.push({ collection: 'programs', id: program.id })
+  })
+
+  afterAll(async () => {
+    for (const { collection, id } of created.reverse()) {
+      await payload.delete({ collection, id })
+    }
+  })
+
+  it('memberi nomor pendaftaran PMB berurutan', async () => {
+    const first = await payload.create({
+      collection: 'pmb-registrations',
+      data: registrationData('1111111111111111'),
+    })
+    const second = await payload.create({
+      collection: 'pmb-registrations',
+      data: registrationData('2222222222222222'),
+    })
+    created.push(
+      { collection: 'pmb-registrations', id: first.id },
+      { collection: 'pmb-registrations', id: second.id },
+    )
+
+    expect(first.registrationNumber).toMatch(/^PMB-\d{4}-\d{4}$/)
+    const number = (value?: null | string) => Number(value?.slice(-4))
+    expect(number(second.registrationNumber)).toBe(number(first.registrationNumber) + 1)
+    expect(first.status).toBe('baru')
+  })
+
+  it('membuat slug otomatis dari judul', async () => {
+    const post = await payload.create({
+      collection: 'posts',
+      data: {
+        content: {
+          root: { children: [], direction: 'ltr', format: '', indent: 0, type: 'root', version: 1 },
+        },
+        slug: '',
+        title: 'Uji Slug & Judul Berita',
+      },
+      draft: true,
+    })
+    created.push({ collection: 'posts', id: post.id })
+    expect(post.slug).toBe('uji-slug-dan-judul-berita')
+  })
+
+  it('menolak slug halaman yang bentrok dengan rute bawaan', async () => {
+    await expect(
+      payload.create({
+        collection: 'pages',
+        data: { layout: [{ blockType: 'programList' }], slug: 'berita', title: 'Berita' },
+      }),
+    ).rejects.toThrow()
+  })
+})
