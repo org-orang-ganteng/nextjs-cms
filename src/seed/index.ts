@@ -4,6 +4,8 @@
  * Jalankan: `pnpm seed` (database harus sudah berjalan).
  * Seed dilewati bila data program studi sudah ada; paksa dengan SEED_FORCE=true.
  *
+ * Isi data mengikuti rancangan database terbaru (stai-db.zip: sql/seed.sql), dipetakan ke koleksi Payload.
+ *
  * Teks bertanda "[Isi resmi menyusul]" dan judul berawalan "Contoh:" adalah placeholder
  * yang harus diganti/dihapus pengelola sebelum go-live (materi disediakan kampus, RAB poin 6.5).
  */
@@ -30,18 +32,41 @@ if (existingPrograms > 0 && process.env.SEED_FORCE !== 'true') {
   process.exit(0)
 }
 
-// ── Akun admin pertama ────────────────────────────────────────────────────────
+// ── Akun admin & editor pertama ───────────────────────────────────────────────
 const { totalDocs: existingUsers } = await payload.count({ collection: 'users' })
 if (existingUsers === 0) {
-  const email = process.env.SEED_ADMIN_EMAIL || 'admin@staimorowali.ac.id'
-  const generated = !process.env.SEED_ADMIN_PASSWORD
-  const password = process.env.SEED_ADMIN_PASSWORD || crypto.randomBytes(12).toString('base64url')
-  await payload.create({
-    collection: 'users',
-    data: { email, name: 'Administrator', password, roles: ['admin'] },
-  })
-  log.info(`Akun admin dibuat: ${email}`)
-  if (generated) log.warn(`Password sementara: ${password}  (segera ganti setelah login)`)
+  for (const account of [
+    {
+      email: process.env.SEED_ADMIN_EMAIL || 'admin@staimorowali.ac.id',
+      name: 'Administrator',
+      password: process.env.SEED_ADMIN_PASSWORD,
+      role: 'admin' as const,
+      username: process.env.SEED_ADMIN_USERNAME || 'admin',
+    },
+    {
+      email: process.env.SEED_EDITOR_EMAIL || 'editor@staimorowali.ac.id',
+      name: 'Editor Konten',
+      password: process.env.SEED_EDITOR_PASSWORD,
+      role: 'editor' as const,
+      username: process.env.SEED_EDITOR_USERNAME || 'editor',
+    },
+  ]) {
+    const password = account.password || crypto.randomBytes(12).toString('base64url')
+    await payload.create({
+      collection: 'users',
+      data: {
+        email: account.email,
+        name: account.name,
+        password,
+        roles: [account.role],
+        username: account.username,
+      },
+    })
+    log.info(`Akun ${account.role} dibuat: ${account.username} (${account.email})`)
+    if (!account.password) {
+      log.warn(`Password sementara ${account.role}: ${password}  (segera ganti setelah login)`)
+    }
+  }
 }
 
 // ── Media ─────────────────────────────────────────────────────────────────────
@@ -72,7 +97,7 @@ const programSeeds = [
   },
   {
     code: 'HKI',
-    name: 'Hukum Keluarga Islam (Ahwal Syakhshiyyah)',
+    name: 'Hukum Keluarga Islam',
     summary:
       'Mengkaji hukum perkawinan, kewarisan, dan perwakafan dalam Islam beserta penerapannya di Indonesia.',
   },
@@ -109,7 +134,7 @@ await payload.updateGlobal({
     journalUrl: DEFAULT_JOURNAL_URL,
     logo: logo.id,
     siteName: SITE_NAME,
-    tagline: 'Sekolah Tinggi Agama Islam di Kabupaten Morowali',
+    tagline: 'Sekolah Tinggi Agama Islam Morowali',
   },
 })
 
@@ -179,7 +204,7 @@ await payload.updateGlobal({
         title: 'Informasi',
       },
     ],
-    copyright: '© {tahun} STAI Morowali. Seluruh hak cipta dilindungi.',
+    copyright: '© {tahun} STAI Morowali. Hak cipta dilindungi.',
   },
 })
 
@@ -207,10 +232,9 @@ await payload.updateGlobal({
     ],
     slides: [
       {
-        primaryButton: { label: 'Info PMB', url: '/pmb' },
+        primaryButton: { label: 'Daftar Sekarang', url: '/pmb' },
         secondaryButton: { label: 'Lihat Program Studi', url: '/program-studi' },
-        subtitle:
-          'Program Studi Pendidikan Agama Islam, Pendidikan Guru Madrasah Ibtidaiyah, Pendidikan Islam Anak Usia Dini, dan Hukum Keluarga Islam.',
+        subtitle: 'Mencetak generasi berilmu, berakhlak, dan berkarakter Islami.',
         title: 'Selamat Datang di STAI Morowali',
       },
     ],
@@ -227,6 +251,7 @@ await payload.updateGlobal({
     leaderName: 'Dr. H. Najamudin, S.Ag., S.Pd., M.Pd.',
     leaderTitle: 'Ketua STAI Morowali',
     missions: [{ text: PLACEHOLDER }],
+    officials: [{ name: 'Dr. H. Najamudin, S.Ag., S.Pd., M.Pd.', position: 'Ketua STAI Morowali' }],
     vision: PLACEHOLDER,
   },
 })
@@ -234,7 +259,7 @@ await payload.updateGlobal({
 await payload.updateGlobal({
   slug: 'pmb-info',
   data: {
-    academicYear: '2027/2028',
+    academicYear: '2026/2027',
     guide: richText(
       heading('Alur pendaftaran awal'),
       bulletList([
@@ -246,11 +271,12 @@ await payload.updateGlobal({
     ),
     intro: paragraphs(
       'Penerimaan Mahasiswa Baru (PMB) STAI Morowali dibuka untuk lulusan SMA/MA/SMK atau sederajat.',
-      PLACEHOLDER,
+      'Informasi biaya akan diumumkan oleh panitia PMB.',
     ),
     isOpen: true,
     requirements: [{ text: PLACEHOLDER }],
-    wave: 'Gelombang I',
+    schedule: [{ date: '15 Oktober – 31 Desember 2026', stage: 'Pendaftaran Gelombang 1' }],
+    wave: 'Gelombang 1',
   },
 })
 
@@ -261,13 +287,13 @@ const day = 24 * 60 * 60 * 1000
 for (const [index, item] of [
   {
     category: 'umum' as const,
-    excerpt: 'Contoh berita untuk melihat tampilan daftar dan detail berita.',
-    title: 'Contoh: Website Resmi STAI Morowali dalam Tahap Pengembangan',
+    excerpt: 'STAI Morowali meluncurkan website resmi sebagai sarana informasi akademik.',
+    title: 'Website Resmi STAI Morowali Diluncurkan',
   },
   {
     category: 'akademik' as const,
-    excerpt: 'Contoh berita kategori akademik.',
-    title: 'Contoh: Kegiatan Akademik Program Studi',
+    excerpt: 'Pendaftaran mahasiswa baru STAI Morowali telah dibuka untuk 4 program studi.',
+    title: 'Pembukaan Penerimaan Mahasiswa Baru 2026/2027',
   },
 ].entries()) {
   await payload.create({
@@ -286,11 +312,13 @@ await payload.create({
   collection: 'announcements',
   data: {
     _status: 'published',
-    content: paragraphs('Contoh pengumuman yang disematkan di urutan teratas.', PLACEHOLDER),
+    content: paragraphs(
+      'Pendaftaran gelombang 1 dibuka. Informasi lengkap tersedia di halaman PMB.',
+    ),
     pinned: true,
     publishedAt: new Date(now).toISOString(),
-    slug: 'contoh-pengumuman-penting-kampus',
-    title: 'Contoh: Pengumuman Penting Kampus',
+    slug: 'pengumuman-pendaftaran-mahasiswa-baru',
+    title: 'Pengumuman Pendaftaran Mahasiswa Baru',
   },
 })
 

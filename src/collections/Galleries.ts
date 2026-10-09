@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { isStaff, publishedOrStaff } from '@/access'
 import { slugField } from '@/fields/common'
+import { revalidateCollection } from '@/hooks/revalidate'
 import { validateYouTubeUrl } from '@/lib/youtube'
 
 export const Galleries: CollectionConfig = {
@@ -10,7 +11,7 @@ export const Galleries: CollectionConfig = {
   admin: {
     defaultColumns: ['title', 'date', '_status', 'updatedAt'],
     description: 'Album dokumentasi foto & video kegiatan akademik dan kemahasiswaan.',
-    group: 'Informasi',
+    group: 'Konten',
     useAsTitle: 'title',
   },
   access: {
@@ -20,6 +21,7 @@ export const Galleries: CollectionConfig = {
     update: isStaff,
   },
   defaultSort: '-date',
+  hooks: revalidateCollection,
   versions: {
     drafts: true,
     maxPerDoc: 10,

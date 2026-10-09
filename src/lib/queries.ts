@@ -89,7 +89,17 @@ export async function getAnnouncements({
     overrideAccess: false,
     page,
     sort: ['-pinned', '-publishedAt'],
-    where: PUBLISHED,
+    where: {
+      and: [
+        PUBLISHED,
+        {
+          or: [
+            { expiresAt: { exists: false } },
+            { expiresAt: { greater_than: new Date().toISOString() } },
+          ],
+        },
+      ],
+    },
   })
 }
 

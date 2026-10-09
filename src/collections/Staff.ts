@@ -1,6 +1,7 @@
 import type { CollectionConfig, Condition } from 'payload'
 
 import { anyone, isStaff } from '@/access'
+import { revalidateCollection } from '@/hooks/revalidate'
 import { ACADEMIC_RANKS, STAFF_TYPES } from '@/lib/options'
 
 const isLecturer: Condition = (_data, siblingData) => siblingData?.type === 'dosen'
@@ -23,6 +24,7 @@ export const Staff: CollectionConfig = {
     update: isStaff,
   },
   defaultSort: 'order',
+  hooks: revalidateCollection,
   fields: [
     {
       type: 'row',

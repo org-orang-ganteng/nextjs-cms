@@ -132,22 +132,34 @@ export interface Config {
   };
 }
 export interface UserAuthOperations {
-  forgotPassword: {
-    email: string;
-    password: string;
-  };
-  login: {
-    email: string;
-    password: string;
-  };
+  forgotPassword:
+    | {
+        email: string;
+      }
+    | {
+        username: string;
+      };
+  login:
+    | {
+        email: string;
+        password: string;
+      }
+    | {
+        password: string;
+        username: string;
+      };
   registerFirstUser: {
-    email: string;
     password: string;
+    username: string;
+    email?: string;
   };
-  unlock: {
-    email: string;
-    password: string;
-  };
+  unlock:
+    | {
+        email: string;
+      }
+    | {
+        username: string;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -196,7 +208,7 @@ export interface Post {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * Gambar dan dokumen PDF yang dipakai di seluruh website.
+ * Gambar (JPG, PNG, WebP) dan dokumen PDF yang dipakai di seluruh website, maks. 5 MB per berkas.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
@@ -282,6 +294,10 @@ export interface Announcement {
   };
   pinned?: boolean | null;
   publishedAt?: string | null;
+  /**
+   * Opsional. Setelah tanggal ini pengumuman tidak tampil di daftar.
+   */
+  expiresAt?: string | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
@@ -764,7 +780,8 @@ export interface User {
   roles: ('admin' | 'editor')[];
   updatedAt: string;
   createdAt: string;
-  email: string;
+  email?: string | null;
+  username: string;
   resetPasswordToken?: string | null;
   resetPasswordExpiration?: string | null;
   salt?: string | null;
@@ -933,6 +950,7 @@ export interface AnnouncementsSelect<T extends boolean = true> {
       };
   pinned?: T;
   publishedAt?: T;
+  expiresAt?: T;
   generateSlug?: T;
   slug?: T;
   updatedAt?: T;
@@ -1340,6 +1358,7 @@ export interface UsersSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   email?: T;
+  username?: T;
   resetPasswordToken?: T;
   resetPasswordExpiration?: T;
   salt?: T;
@@ -1638,7 +1657,7 @@ export interface SiteSetting {
   fullName?: string | null;
   tagline?: string | null;
   /**
-   * Disarankan PNG/SVG persegi beresolusi tinggi. Kosongkan untuk memakai logo bawaan.
+   * Disarankan PNG/WebP persegi beresolusi tinggi. Kosongkan untuk memakai logo bawaan.
    */
   logo?: (number | null) | Media;
   /**

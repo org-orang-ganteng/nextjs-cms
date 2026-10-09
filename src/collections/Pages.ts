@@ -4,6 +4,7 @@ import { isStaff, publishedOrStaff } from '@/access'
 import { pageBlocks } from '@/blocks'
 import { slugField } from '@/fields/common'
 import { seoTab } from '@/fields/seo'
+import { revalidateCollection } from '@/hooks/revalidate'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -20,6 +21,7 @@ export const Pages: CollectionConfig = {
     read: publishedOrStaff,
     update: isStaff,
   },
+  hooks: revalidateCollection,
   versions: {
     drafts: true,
     maxPerDoc: 20,

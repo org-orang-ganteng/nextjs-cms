@@ -45,6 +45,7 @@ export const RESERVED_PAGE_SLUGS = new Set([
   'galeri',
   'jurnal',
   'kontak',
+  'login',
   'pengumuman',
   'pmb',
   'profil',

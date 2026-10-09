@@ -3,6 +3,7 @@ import type { CollectionConfig, DateFieldValidation } from 'payload'
 import { isStaff, publishedOrStaff } from '@/access'
 import { slugField } from '@/fields/common'
 import { seoTab } from '@/fields/seo'
+import { revalidateCollection } from '@/hooks/revalidate'
 
 const validateEndDate: DateFieldValidation = (value, { siblingData }) => {
   const start = (siblingData as { startDate?: string } | undefined)?.startDate
@@ -17,7 +18,7 @@ export const Events: CollectionConfig = {
   labels: { plural: 'Agenda', singular: 'Agenda' },
   admin: {
     defaultColumns: ['title', 'startDate', 'location', '_status'],
-    group: 'Informasi',
+    group: 'Konten',
     useAsTitle: 'title',
   },
   access: {
@@ -27,6 +28,7 @@ export const Events: CollectionConfig = {
     update: isStaff,
   },
   defaultSort: '-startDate',
+  hooks: revalidateCollection,
   versions: {
     drafts: true,
     maxPerDoc: 20,

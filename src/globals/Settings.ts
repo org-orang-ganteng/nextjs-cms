@@ -56,7 +56,7 @@ export const SiteSettings: GlobalConfig = {
               relationTo: 'media',
               admin: {
                 description:
-                  'Disarankan PNG/SVG persegi beresolusi tinggi. Kosongkan untuk memakai logo bawaan.',
+                  'Disarankan PNG/WebP persegi beresolusi tinggi. Kosongkan untuk memakai logo bawaan.',
               },
             },
             {

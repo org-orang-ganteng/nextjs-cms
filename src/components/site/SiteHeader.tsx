@@ -1,4 +1,5 @@
-import { BookOpen, Mail, Phone } from 'lucide-react'
+import { LogIn, Mail, Phone } from 'lucide-react'
+import Link from 'next/link'
 
 import { getHeader, getSiteSettings } from '@/lib/queries'
 
@@ -37,15 +38,10 @@ export async function SiteHeader() {
                 {settings.email}
               </a>
             )}
-            <a
-              className="flex items-center gap-1.5 hover:text-white"
-              href="/jurnal"
-              rel="noopener"
-              target="_blank"
-            >
-              <BookOpen aria-hidden className="size-3.5" />
-              Rumah Jurnal
-            </a>
+            <Link className="flex items-center gap-1.5 hover:text-white" href="/login">
+              <LogIn aria-hidden className="size-3.5" />
+              Login
+            </Link>
           </div>
         </div>
       </div>

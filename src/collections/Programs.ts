@@ -3,6 +3,7 @@ import type { CollectionConfig, Field } from 'payload'
 import { anyone, isAdmin, isStaff } from '@/access'
 import { slugField } from '@/fields/common'
 import { seoTab } from '@/fields/seo'
+import { revalidateCollection } from '@/hooks/revalidate'
 
 const textList = (name: string, label: string, itemLabel: string): Field => ({
   name,
@@ -28,6 +29,7 @@ export const Programs: CollectionConfig = {
     update: isStaff,
   },
   defaultSort: 'order',
+  hooks: revalidateCollection,
   fields: [
     {
       type: 'row',

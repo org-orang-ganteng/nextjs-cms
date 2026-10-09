@@ -89,6 +89,15 @@ export function MobileNav({ cta, items }: { cta: NavLink | null; items: NavItem[
               )}
             </li>
           ))}
+          <li>
+            <SmartLink
+              className={cn(linkClass('/login'), 'font-semibold')}
+              href="/login"
+              onClick={close}
+            >
+              Login
+            </SmartLink>
+          </li>
         </ul>
       </nav>
       {cta && (

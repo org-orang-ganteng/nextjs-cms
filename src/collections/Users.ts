@@ -15,7 +15,7 @@ export const Users: CollectionConfig = {
   slug: 'users',
   labels: { plural: 'Pengguna', singular: 'Pengguna' },
   admin: {
-    defaultColumns: ['name', 'email', 'roles', 'updatedAt'],
+    defaultColumns: ['name', 'username', 'email', 'roles', 'updatedAt'],
     description: 'Akun pengelola website. Admin mengelola semuanya; Editor mengelola konten.',
     enableRichTextLink: false,
     enableRichTextRelationship: false,
@@ -24,6 +24,7 @@ export const Users: CollectionConfig = {
   },
   auth: {
     lockTime: 10 * 60 * 1000,
+    loginWithUsername: { allowEmailLogin: true, requireEmail: false },
     maxLoginAttempts: 5,
     tokenExpiration: 8 * 60 * 60,
   },

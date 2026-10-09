@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { isStaff, publishedOrStaff } from '@/access'
 import { publishedAtField, slugField } from '@/fields/common'
 import { seoTab } from '@/fields/seo'
+import { revalidateCollection } from '@/hooks/revalidate'
 import { POST_CATEGORIES } from '@/lib/options'
 
 export const Posts: CollectionConfig = {
@@ -10,7 +11,7 @@ export const Posts: CollectionConfig = {
   labels: { plural: 'Berita', singular: 'Berita' },
   admin: {
     defaultColumns: ['title', 'category', 'publishedAt', '_status'],
-    group: 'Informasi',
+    group: 'Konten',
     useAsTitle: 'title',
   },
   access: {
@@ -20,6 +21,7 @@ export const Posts: CollectionConfig = {
     update: isStaff,
   },
   defaultSort: '-publishedAt',
+  hooks: revalidateCollection,
   versions: {
     drafts: true,
     maxPerDoc: 20,
