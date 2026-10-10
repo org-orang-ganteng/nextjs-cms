@@ -72,7 +72,7 @@ export default async function ContactPage() {
                   </span>
                   {href ? (
                     <a
-                      className="mt-0.5 block font-medium break-words text-stone-900 hover:text-brand-800"
+                      className="mt-0.5 block font-medium wrap-break-word text-stone-900 hover:text-brand-800"
                       href={href}
                       rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                       target={href.startsWith('http') ? '_blank' : undefined}
@@ -101,7 +101,7 @@ export default async function ContactPage() {
 
         <div className="min-w-0 space-y-10">
           {mapEmbedUrl && (
-            <div className="card relative aspect-[16/9] overflow-hidden">
+            <div className="card relative aspect-video overflow-hidden">
               <iframe
                 allowFullScreen
                 className="absolute inset-0 size-full"

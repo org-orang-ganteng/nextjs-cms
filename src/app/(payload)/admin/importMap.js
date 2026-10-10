@@ -30,6 +30,8 @@ import { SlugField as SlugField_2b8867833a34864a02ddf429b0728a40 } from '@payloa
 import { ExportExcelButton as ExportExcelButton_6761f03b4cc1990c5851c5196fbd46b0 } from '../../../components/admin/ExportExcelButton'
 import { Icon as Icon_bedc1e06f20d365eaa4738f78ed07569 } from '../../../components/admin/Branding'
 import { Logo as Logo_bedc1e06f20d365eaa4738f78ed07569 } from '../../../components/admin/Branding'
+import { DashboardHome as DashboardHome_84cd845a8766cfd3c2cceae49d5dee3d } from '../../../components/admin/DashboardHome'
+import { AdminFont as AdminFont_4c2dd352f1a39a23daa62266c76fa6c3 } from '../../../components/admin/AdminFont'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
@@ -66,5 +68,7 @@ export const importMap = {
   "/components/admin/ExportExcelButton#ExportExcelButton": ExportExcelButton_6761f03b4cc1990c5851c5196fbd46b0,
   "/components/admin/Branding#Icon": Icon_bedc1e06f20d365eaa4738f78ed07569,
   "/components/admin/Branding#Logo": Logo_bedc1e06f20d365eaa4738f78ed07569,
+  "/components/admin/DashboardHome#DashboardHome": DashboardHome_84cd845a8766cfd3c2cceae49d5dee3d,
+  "/components/admin/AdminFont#AdminFont": AdminFont_4c2dd352f1a39a23daa62266c76fa6c3,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

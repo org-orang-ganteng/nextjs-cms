@@ -1,0 +1,526 @@
+// Tema panel admin mengikuti identitas situs publik (src/app/(frontend)/globals.css).
+// Gaya bawaan Payload berada di @layer payload-default, jadi aturan di sini selalu menang;
+// karena itu varian state (hover/disabled) bawaan perlu ditulis ulang bila properti yang sama ditimpa.
+
+$pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='white' stroke-opacity='0.08' stroke-width='1.2'%3E%3Crect x='20' y='20' width='24' height='24'/%3E%3Crect x='20' y='20' width='24' height='24' transform='rotate(45 32 32)'/%3E%3Ccircle cx='32' cy='32' r='5'/%3E%3C/g%3E%3C/svg%3E");
+
+:root {
+  --brand-50: #ebf9f1;
+  --brand-100: #cef1dd;
+  --brand-200: #a0e2c0;
+  --brand-300: #66cc9a;
+  --brand-400: #2fb174;
+  --brand-500: #009652;
+  --brand-600: #007f45;
+  --brand-700: #006638;
+  --brand-800: #00512e;
+  --brand-900: #003f25;
+  --brand-950: #002516;
+  --gold-200: #fbef8c;
+  --gold-400: #f2d01a;
+  --paper: #fbfaf6;
+
+  --stai-accent: var(--brand-700);
+  --stai-accent-text: var(--brand-800);
+  --stai-accent-soft: var(--brand-50);
+  --stai-accent-ring: rgb(0 127 69 / 0.2);
+
+  --font-body: var(--font-jakarta), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --style-radius-s: 6px;
+  --style-radius-m: 8px;
+  --style-radius-l: 12px;
+
+  // Skala "success" Payload dipakai untuk aksen: outline fokus, status terbit, item terpilih.
+  --color-success-50: #ebf9f1;
+  --color-success-100: #cef1dd;
+  --color-success-150: #b7e9cf;
+  --color-success-200: #a0e2c0;
+  --color-success-250: #83d7ad;
+  --color-success-300: #66cc9a;
+  --color-success-350: #4abf87;
+  --color-success-400: #2fb174;
+  --color-success-450: #18a463;
+  --color-success-500: #009652;
+  --color-success-550: #008b4b;
+  --color-success-600: #007f45;
+  --color-success-650: #00733e;
+  --color-success-700: #006638;
+  --color-success-750: #005c33;
+  --color-success-800: #00512e;
+  --color-success-850: #00482a;
+  --color-success-900: #003f25;
+  --color-success-950: #002516;
+
+  // Warning mengikuti emas situs; error mengikuti merah Tailwind yang dipakai di formulir situs.
+  --color-warning-50: #fefce8;
+  --color-warning-100: #fdf8c4;
+  --color-warning-150: #fcf4a8;
+  --color-warning-200: #fbef8c;
+  --color-warning-250: #fae96c;
+  --color-warning-300: #f8e24c;
+  --color-warning-350: #f5d933;
+  --color-warning-400: #f2d01a;
+  --color-warning-450: #e7c214;
+  --color-warning-500: #dbb40d;
+  --color-warning-550: #c89f0a;
+  --color-warning-600: #b48a08;
+  --color-warning-650: #a2780a;
+  --color-warning-700: #8f650b;
+  --color-warning-750: #7d580e;
+  --color-warning-800: #6b4b10;
+  --color-warning-850: #5a3f12;
+  --color-warning-900: #4a3412;
+  --color-warning-950: #2b1d08;
+
+  --color-error-50: #fef2f2;
+  --color-error-100: #fee2e2;
+  --color-error-150: #fdd6d6;
+  --color-error-200: #fecaca;
+  --color-error-250: #fdb8b8;
+  --color-error-300: #fca5a5;
+  --color-error-350: #fa8b8b;
+  --color-error-400: #f87171;
+  --color-error-450: #f35b5b;
+  --color-error-500: #ef4444;
+  --color-error-550: #e63535;
+  --color-error-600: #dc2626;
+  --color-error-650: #ca2121;
+  --color-error-700: #b91c1c;
+  --color-error-750: #a91c1c;
+  --color-error-800: #991b1b;
+  --color-error-850: #8c1c1c;
+  --color-error-900: #7f1d1d;
+  --color-error-950: #450a0a;
+}
+
+html:not([data-theme='dark']) {
+  --theme-bg: var(--paper);
+}
+
+html[data-theme='dark'] {
+  --stai-accent: var(--brand-500);
+  --stai-accent-text: var(--brand-300);
+  --stai-accent-soft: rgb(0 150 82 / 0.12);
+  --stai-accent-ring: rgb(47 177 116 / 0.3);
+}
+
+::selection {
+  background: var(--gold-200);
+  color: var(--brand-950);
+}
+
+// Tombol
+.btn--style-primary {
+  --color: #fff;
+  --bg-color: var(--brand-700);
+  --hover-bg: var(--brand-800);
+  --hover-color: #fff;
+  --btn-font-weight: 600;
+
+  &.btn--disabled {
+    --bg-color: var(--theme-elevation-200);
+    --color: var(--theme-elevation-800);
+    --hover-bg: var(--bg-color);
+    --hover-color: var(--color);
+  }
+}
+
+.btn--style-secondary:not(.btn--disabled) {
+  --color: var(--stai-accent-text);
+  --btn-border: 1px solid var(--stai-accent);
+  --hover-color: var(--stai-accent-text);
+  --hover-bg: var(--stai-accent-soft);
+  --hover-btn-border: 1px solid var(--stai-accent);
+  --btn-font-weight: 600;
+}
+
+// Input (field bergalat dikecualikan agar bingkai merahnya tetap terlihat saat fokus)
+.field-type.text:not(.has-many):not(.error) input,
+.field-type.email:not(.error) input,
+.field-type.password:not(.error) input,
+.field-type.number:not(.error) input,
+.field-type.textarea:not(.error) textarea {
+  &:hover:not(:disabled) {
+    border-color: var(--brand-300);
+  }
+
+  &:focus {
+    border-color: var(--stai-accent);
+    box-shadow: 0 0 0 3px var(--stai-accent-ring);
+  }
+}
+
+.rs__control--is-focused {
+  border-color: var(--stai-accent) !important;
+  box-shadow: 0 0 0 3px var(--stai-accent-ring) !important;
+}
+
+.field-label {
+  font-weight: 600;
+}
+
+// Tab (mis. tab SEO): garis aktif hijau seperti tautan aktif situs.
+.tabs-field__tab-button--active:not(.tabs-field__tab-button--has-error) {
+  color: var(--stai-accent-text);
+
+  &::after {
+    background: var(--stai-accent);
+  }
+}
+
+// Sidebar: hijau tua bermotif seperti footer situs publik.
+.nav {
+  --theme-text: var(--brand-50);
+  --theme-elevation-0: var(--brand-950);
+  --theme-elevation-50: var(--brand-900);
+  --theme-elevation-100: rgb(255 255 255 / 0.08);
+  --theme-elevation-150: rgb(255 255 255 / 0.14);
+  --theme-elevation-200: var(--brand-400);
+  --theme-elevation-400: var(--brand-300);
+  --theme-elevation-500: var(--brand-200);
+  --theme-elevation-800: #fff;
+  --theme-elevation-1000: #fff;
+  --theme-border-color: rgb(255 255 255 / 0.14);
+  background-color: var(--brand-950);
+  background-image: $pattern;
+  color: var(--theme-text);
+  border-inline: 0;
+}
+
+.nav-group__toggle {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.nav__link {
+  color: var(--brand-100);
+
+  &:hover,
+  &:focus-visible {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  &.active,
+  &:has(.nav__link-indicator) {
+    color: #fff;
+  }
+}
+
+.nav__link-indicator {
+  width: 3px;
+  background: var(--gold-400);
+}
+
+// Breadcrumb
+.step-nav a {
+  color: var(--stai-accent-text);
+}
+
+// Dasbor
+.collections__label {
+  color: var(--stai-accent-text);
+  font-weight: 700;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 3.5rem;
+    height: 4px;
+    margin-top: 0.5rem;
+    border-radius: 999px;
+    background: var(--gold-400);
+  }
+}
+
+// Judul halaman daftar koleksi: tebal dengan garis emas, meniru PageHeader situs publik.
+// Garis diposisikan absolut agar tombol "Create New" tetap sejajar dengan teks judul.
+.list-header__title {
+  position: relative;
+  color: var(--stai-accent-text);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -0.6rem;
+    left: 0;
+    width: 3.5rem;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--gold-400);
+  }
+}
+
+.list-create-new-doc__create-new-button.btn--style-pill {
+  --bg-color: var(--stai-accent-soft);
+  --color: var(--stai-accent-text);
+  --hover-bg: var(--brand-700);
+  --hover-color: #fff;
+  --btn-font-weight: 600;
+}
+
+// Isi editor teks kaya memakai font situs, bukan serif bawaan Payload.
+.rich-text-lexical .editor-container,
+.lexical-diff .field-diff-content .html-diff {
+  font-family: var(--font-body);
+  letter-spacing: normal;
+}
+
+// Header kolom tabel memakai warna aksen hijau agar senada dengan tombol dan judul.
+.table th {
+  color: var(--stai-accent-text);
+  font-weight: 700;
+}
+
+// Tabel daftar: kartu putih bergaris tipis, menggantikan zebra abu-abu bawaan.
+.table:not(.table--appearance-condensed) {
+  border: 1px solid var(--theme-elevation-100);
+  border-radius: var(--style-radius-l);
+  background: var(--theme-elevation-0);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+
+  thead th {
+    background: var(--stai-accent-soft);
+    border-bottom: 1px solid var(--theme-elevation-100);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  tbody tr {
+    &:nth-child(odd) {
+      background: transparent;
+    }
+
+    &:not(:first-child) td {
+      border-top: 1px solid var(--theme-elevation-100);
+    }
+
+    &:hover {
+      background: var(--stai-accent-soft);
+    }
+  }
+
+  tbody td a:not(.btn):not(.pill) {
+    color: var(--stai-accent-text);
+    font-weight: 600;
+  }
+}
+
+// Badge: label status dibuat tebal agar mudah dipindai.
+.pill--style-success,
+.pill--style-warning,
+.pill--style-error {
+  font-weight: 600;
+}
+
+.list-controls .pill--has-action:hover {
+  background: var(--stai-accent-soft);
+  color: var(--stai-accent-text);
+}
+
+.paginator__page--is-current {
+  background: var(--brand-700);
+  color: #fff;
+  font-weight: 600;
+}
+
+// Panel samping form dokumen: latar putih agar terpisah dari area isian utama.
+.document-fields--has-sidebar .document-fields__sidebar-wrap {
+  background: var(--theme-elevation-0);
+}
+
+.card {
+  background: var(--theme-elevation-0);
+  border-color: var(--theme-elevation-150);
+  border-radius: var(--style-radius-l);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+}
+
+.card--has-onclick:hover {
+  background: var(--stai-accent-soft);
+  border-color: var(--stai-accent);
+  box-shadow: 0 4px 8px -2px rgb(0 0 0 / 0.08);
+
+  .card__title {
+    color: var(--stai-accent-text);
+  }
+}
+
+// Halaman login, lupa sandi, dan sejenisnya: kartu putih di atas latar hijau bermotif.
+.template-minimal {
+  min-height: 100vh;
+  background-color: var(--brand-800);
+  background-image: $pattern;
+}
+
+.template-minimal__wrap {
+  padding: calc(var(--base) * 1.6);
+  border: 1px solid var(--theme-elevation-100);
+  border-radius: var(--style-radius-l);
+  background: var(--theme-elevation-0);
+  box-shadow:
+    0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+// Logo (komponen Branding)
+.stai-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  &__logo {
+    border-radius: 9999px;
+    object-fit: contain;
+  }
+
+  &__name {
+    margin: 0;
+    color: var(--stai-accent-text);
+    font-size: 1.4rem;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  &__tagline {
+    margin: 0.25rem 0 0;
+    color: var(--theme-elevation-500);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+}
+
+.stai-icon {
+  border-radius: 9999px;
+  background: #fff;
+  object-fit: contain;
+}
+
+.export-excel {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: calc(var(--base) / 2);
+}
+
+// Beranda (komponen DashboardHome)
+.stai-dash {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+
+  &__hero {
+    padding: 1.5rem 1.75rem;
+    border-radius: var(--style-radius-l);
+    background-color: var(--brand-800);
+    background-image: $pattern;
+    color: #fff;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+  }
+
+  &__eyebrow {
+    margin: 0;
+    color: var(--gold-400);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    margin: 0.35rem 0 0;
+    color: #fff;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  &__lead {
+    margin: 0.4rem 0 0;
+    color: var(--brand-100);
+    font-size: 0.95rem;
+  }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+  }
+
+  &__stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid var(--theme-elevation-150);
+    border-radius: var(--style-radius-l);
+    background: var(--theme-elevation-0);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+    color: inherit;
+    text-decoration: none;
+    transition:
+      border-color 0.15s,
+      box-shadow 0.15s;
+
+    &:hover,
+    &:focus-visible {
+      border-color: var(--stai-accent);
+      box-shadow: 0 4px 8px -2px rgb(0 0 0 / 0.08);
+      text-decoration: none;
+    }
+  }
+
+  &__stat-label {
+    color: var(--stai-accent-text);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  &__stat-value {
+    color: var(--theme-text);
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__stat-note {
+    color: var(--theme-elevation-600);
+    font-size: 0.8rem;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  &__action {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: var(--style-radius-m);
+    background: var(--brand-700);
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      background: var(--brand-800);
+      color: #fff;
+      text-decoration: none;
+    }
+  }
+}

@@ -32,7 +32,7 @@ if (existingPrograms > 0 && process.env.SEED_FORCE !== 'true') {
   process.exit(0)
 }
 
-// ── Akun admin & editor pertama ───────────────────────────────────────────────
+// ── Akun admin pertama ────────────────────────────────────────────────────────
 const { totalDocs: existingUsers } = await payload.count({ collection: 'users' })
 if (existingUsers === 0) {
   for (const account of [
@@ -42,13 +42,6 @@ if (existingUsers === 0) {
       password: process.env.SEED_ADMIN_PASSWORD,
       role: 'admin' as const,
       username: process.env.SEED_ADMIN_USERNAME || 'admin',
-    },
-    {
-      email: process.env.SEED_EDITOR_EMAIL || 'editor@staimorowali.ac.id',
-      name: 'Editor Konten',
-      password: process.env.SEED_EDITOR_PASSWORD,
-      role: 'editor' as const,
-      username: process.env.SEED_EDITOR_USERNAME || 'editor',
     },
   ]) {
     const password = account.password || crypto.randomBytes(12).toString('base64url')

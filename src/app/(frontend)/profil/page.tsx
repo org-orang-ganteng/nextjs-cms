@@ -107,7 +107,7 @@ export default async function ProfilePage() {
             </h2>
             <div className="card grid gap-8 p-6 md:grid-cols-[12rem_1fr] md:p-8">
               <div>
-                <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-brand-50">
+                <div className="relative aspect-3/4 overflow-hidden rounded-xl bg-brand-50">
                   {isImage(leaderPhoto) && (
                     <MediaImage
                       className="object-cover"

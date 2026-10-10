@@ -19,9 +19,7 @@ export function ExportExcelButton({ collectionSlug }: Props) {
   const href = `${config.serverURL}${config.routes.api}/${collectionSlug}/export${query ? `?${query}` : ''}`
 
   return (
-    <div
-      style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 'calc(var(--base) / 2)' }}
-    >
+    <div className="export-excel">
       <Button buttonStyle="secondary" el="anchor" size="small" url={href}>
         Ekspor ke Excel (.xlsx)
       </Button>

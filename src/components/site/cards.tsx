@@ -22,7 +22,7 @@ function CoverPlaceholder({ label }: { label: string }) {
 export function PostCard({ post }: { post: Post }) {
   return (
     <article className="card group relative flex flex-col overflow-hidden transition-shadow hover:shadow-md">
-      <div className="relative aspect-[16/10] overflow-hidden bg-stone-100">
+      <div className="relative aspect-16/10 overflow-hidden bg-stone-100">
         {post.coverImage ? (
           <MediaImage
             className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
@@ -123,7 +123,7 @@ export function EventCard({ event }: { event: Event }) {
 export function ProgramCard({ program }: { program: Program }) {
   return (
     <article className="card group relative flex flex-col overflow-hidden transition-shadow hover:shadow-md">
-      <div className="relative aspect-[16/9] overflow-hidden">
+      <div className="relative aspect-video overflow-hidden">
         {program.coverImage ? (
           <MediaImage
             className="object-cover"
@@ -255,7 +255,7 @@ export function GalleryCard({ gallery }: { gallery: Gallery }) {
   const firstPhoto = gallery.photos?.[0]
   return (
     <article className="card group relative overflow-hidden">
-      <div className="relative aspect-[4/3] overflow-hidden bg-stone-100">
+      <div className="relative aspect-4/3 overflow-hidden bg-stone-100">
         {gallery.coverImage || firstPhoto ? (
           <MediaImage
             className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"

@@ -1,7 +1,10 @@
-import type {
-  CollectionBeforeValidateHook,
-  CollectionConfig,
-  TextFieldSingleValidation,
+import {
+  type CollectionBeforeValidateHook,
+  type CollectionConfig,
+  type Payload,
+  type RequiredDataFromCollectionSlug,
+  type TextFieldSingleValidation,
+  ValidationError,
 } from 'payload'
 
 import { isAdmin, isStaff } from '@/access'
@@ -27,6 +30,28 @@ const assignRegistrationNumber: CollectionBeforeValidateHook = async ({ data, op
   })
   const last = Number.parseInt(docs[0]?.registrationNumber?.slice(prefix.length) ?? '0', 10)
   return { ...data, registrationNumber: `${prefix}${String((last || 0) + 1).padStart(4, '0')}` }
+}
+
+const isDuplicateNumber = (error: unknown) =>
+  error instanceof ValidationError &&
+  error.data.errors.some((item) => /^registration_?number$/i.test(item.path ?? ''))
+
+/**
+ * Membuat pendaftaran baru. Bila dua pendaftar mengirim bersamaan dan mendapat nomor
+ * yang sama, indeks unik menolak salah satunya; nomor dihitung ulang lalu dicoba lagi.
+ */
+export async function createRegistration(
+  payload: Payload,
+  data: RequiredDataFromCollectionSlug<typeof SLUG>,
+  attempts = 5,
+) {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return await payload.create({ collection: SLUG, data })
+    } catch (error) {
+      if (attempt >= attempts || !isDuplicateNumber(error)) throw error
+    }
+  }
 }
 
 const validateNik: TextFieldSingleValidation = (value) =>

@@ -51,7 +51,7 @@ export default async function EventPage({ params }: Props) {
       <article className="container-site py-12 md:py-16">
         <div className="mx-auto max-w-3xl">
           {event.coverImage && (
-            <div className="relative mb-10 aspect-[16/9] overflow-hidden rounded-2xl">
+            <div className="relative mb-10 aspect-video overflow-hidden rounded-2xl">
               <MediaImage
                 className="object-cover"
                 fill

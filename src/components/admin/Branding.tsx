@@ -3,17 +3,17 @@ import Image from 'next/image'
 /** Logo di halaman login panel admin. */
 export function Logo() {
   return (
-    <div style={{ alignItems: 'center', display: 'flex', gap: '1rem' }}>
+    <div className="stai-brand">
       <Image
         alt="Logo STAI Morowali"
+        className="stai-brand__logo"
         height={64}
         src="/images/logo-stai-morowali.jpg"
-        style={{ borderRadius: 12 }}
         width={64}
       />
       <div>
-        <div style={{ fontSize: '1.4rem', fontWeight: 700, lineHeight: 1.2 }}>STAI Morowali</div>
-        <div style={{ fontSize: '0.9rem', opacity: 0.7 }}>Panel Pengelola Website</div>
+        <p className="stai-brand__name">STAI Morowali</p>
+        <p className="stai-brand__tagline">Panel Pengelola Website</p>
       </div>
     </div>
   )
@@ -24,9 +24,9 @@ export function Icon() {
   return (
     <Image
       alt="STAI Morowali"
+      className="stai-icon"
       height={28}
       src="/images/logo-stai-morowali.jpg"
-      style={{ borderRadius: 6 }}
       width={28}
     />
   )

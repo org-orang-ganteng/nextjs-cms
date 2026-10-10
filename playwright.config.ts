@@ -15,8 +15,10 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  // Satu worker: berkas tes berbagi pengguna uji & server dev ber-RAM terbatas.
+  workers: 1,
+  // Kompilasi pertama /admin di server dev bisa memakan ~30 dtk.
+  timeout: 90_000,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -26,11 +28,18 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    // IP acak per run agar pembatas laju login tidak terbawa dari run sebelumnya.
+    extraHTTPHeaders: { 'x-real-ip': `203.0.113.${Math.floor(Math.random() * 254) + 1}` },
   },
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'], channel: 'chromium' },
+      use: {
+        ...devices['Desktop Chrome'],
+        channel: 'chromium',
+        // /dev/shm di dev container hanya 64 MB; tanpa ini tab admin bisa crash.
+        launchOptions: { args: ['--disable-dev-shm-usage'] },
+      },
     },
   ],
   webServer: {

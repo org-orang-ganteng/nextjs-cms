@@ -48,7 +48,7 @@ export function PageHeader({ breadcrumbs = [], children, description, eyebrow, t
         )}
         {children}
       </div>
-      <div aria-hidden className="h-1 bg-gradient-to-r from-gold-400 via-gold-300 to-transparent" />
+      <div aria-hidden className="h-1 bg-linear-to-r from-gold-400 via-gold-300 to-transparent" />
     </section>
   )
 }

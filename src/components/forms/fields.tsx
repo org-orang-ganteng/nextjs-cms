@@ -50,7 +50,7 @@ export function describedBy(name: string, error?: string[], hint?: boolean) {
 /** Field jebakan bot: tersembunyi dari manusia dan pembaca layar. */
 export function Honeypot() {
   return (
-    <div aria-hidden className="absolute -left-[9999px] h-px w-px overflow-hidden">
+    <div aria-hidden className="absolute left-[-9999px] h-px w-px overflow-hidden">
       <label htmlFor="website">Jangan diisi</label>
       <input autoComplete="off" id="website" name="website" tabIndex={-1} type="text" />
     </div>

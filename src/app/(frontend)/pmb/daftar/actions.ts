@@ -2,6 +2,7 @@
 
 import { headers } from 'next/headers'
 
+import { createRegistration } from '@/collections/Registrations'
 import { fieldErrors, type FormState, formValues, registrationSchema } from '@/lib/forms'
 import { getPayloadClient } from '@/lib/queries'
 import { clientIp, isRateLimited } from '@/lib/rate-limit'
@@ -83,26 +84,23 @@ export async function submitRegistration(
       }
     }
 
-    const registration = await payload.create({
-      collection: 'pmb-registrations',
-      data: {
-        academicYear: pmb.academicYear,
-        address: data.address,
-        birthDate: new Date(`${data.birthDate}T00:00:00.000Z`).toISOString(),
-        birthPlace: data.birthPlace,
-        consent: true,
-        email: data.email || undefined,
-        firstChoice: data.firstChoice,
-        fullName: data.fullName,
-        gender: data.gender,
-        graduationYear: data.graduationYear,
-        nik: data.nik,
-        phone: data.phone,
-        schoolOrigin: data.schoolOrigin,
-        secondChoice: data.secondChoice,
-        status: 'baru',
-        wave: pmb.wave,
-      },
+    const registration = await createRegistration(payload, {
+      academicYear: pmb.academicYear,
+      address: data.address,
+      birthDate: new Date(`${data.birthDate}T00:00:00.000Z`).toISOString(),
+      birthPlace: data.birthPlace,
+      consent: true,
+      email: data.email || undefined,
+      firstChoice: data.firstChoice,
+      fullName: data.fullName,
+      gender: data.gender,
+      graduationYear: data.graduationYear,
+      nik: data.nik,
+      phone: data.phone,
+      schoolOrigin: data.schoolOrigin,
+      secondChoice: data.secondChoice,
+      status: 'baru',
+      wave: pmb.wave,
     })
 
     return {

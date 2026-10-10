@@ -1,7 +1,9 @@
 import { getPayload, Payload } from 'payload'
+import { createRegistration } from '@/collections/Registrations'
+import { clientIp } from '@/lib/rate-limit'
 import config from '@/payload.config'
 
-import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 
 let payload: Payload
 let programId: number
@@ -61,6 +63,20 @@ describe('Model konten STAI Morowali', () => {
     expect(first.status).toBe('baru')
   })
 
+  it('tetap memberi nomor unik saat pendaftar mengirim bersamaan', async () => {
+    const results = await Promise.allSettled(
+      ['3333333333333333', '4444444444444444', '5555555555555555'].map((nik) =>
+        createRegistration(payload, registrationData(nik)),
+      ),
+    )
+    const docs = results.flatMap((result) => (result.status === 'fulfilled' ? [result.value] : []))
+    created.push(...docs.map(({ id }) => ({ collection: 'pmb-registrations' as const, id })))
+
+    expect(results.filter((result) => result.status === 'rejected')).toEqual([])
+    const numbers = docs.map((doc) => doc.registrationNumber)
+    expect(new Set(numbers).size).toBe(numbers.length)
+  })
+
   it('membuat slug otomatis dari judul', async () => {
     const post = await payload.create({
       collection: 'posts',
@@ -84,5 +100,26 @@ describe('Model konten STAI Morowali', () => {
         data: { layout: [{ blockType: 'programList' }], slug: 'berita', title: 'Berita' },
       }),
     ).rejects.toThrow()
+  })
+})
+
+describe('IP pengunjung untuk pembatas laju', () => {
+  afterEach(() => {
+    vi.unstubAllEnvs()
+  })
+
+  it('hanya membaca header tepercaya, bukan header kiriman pengunjung', () => {
+    const headers = new Headers({
+      'cf-connecting-ip': '1.1.1.1',
+      'x-forwarded-for': '2.2.2.2, 10.0.0.1',
+      'x-real-ip': '10.0.0.9',
+    })
+    expect(clientIp(headers)).toBe('10.0.0.9')
+    expect(clientIp(new Headers({ 'cf-connecting-ip': '1.1.1.1' }))).toBe('unknown')
+
+    vi.stubEnv('TRUSTED_IP_HEADER', 'x-forwarded-for')
+    expect(clientIp(headers)).toBe('10.0.0.1')
+    vi.stubEnv('TRUSTED_IP_HEADER', 'CF-Connecting-IP')
+    expect(clientIp(headers)).toBe('1.1.1.1')
   })
 })

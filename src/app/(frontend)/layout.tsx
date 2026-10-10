@@ -43,7 +43,7 @@ export const viewport: Viewport = {
 
 export default function FrontendLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html className={jakarta.variable} lang="id">
+    <html className={jakarta.variable} data-scroll-behavior="smooth" lang="id">
       <body className="flex min-h-dvh flex-col font-sans">
         <a
           className="sr-only z-50 rounded-lg bg-white px-4 py-2 font-semibold text-brand-800 focus:not-sr-only focus:fixed focus:top-3 focus:left-3"

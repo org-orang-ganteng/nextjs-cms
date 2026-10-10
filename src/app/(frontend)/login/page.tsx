@@ -6,7 +6,6 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
 import { LoginForm } from '@/components/forms/LoginForm'
-import { PageHeader } from '@/components/site/PageHeader'
 import { asMedia } from '@/lib/media'
 import { getPayloadClient, getSiteSettings } from '@/lib/queries'
 
@@ -24,25 +23,21 @@ export default async function LoginPage() {
   const logo = asMedia(settings.logo)
 
   return (
-    <>
-      <PageHeader
-        breadcrumbs={[{ label: 'Login Admin' }]}
-        description="Masuk ke panel pengelola untuk memperbarui konten website."
-        eyebrow="Panel Pengelola"
-        title="Login Admin"
-      />
-      <div className="container-site py-12 md:py-16">
+    <section className="bg-pattern flex min-h-[calc(100dvh-5rem)] items-center bg-brand-800 md:min-h-[calc(100dvh-7.25rem)]">
+      <h1 className="sr-only">Login Admin</h1>
+      <div className="container-site w-full py-12 md:py-16">
         <div className="mx-auto max-w-md">
-          <div className="card p-6 md:p-8">
+          <div className="card p-6 shadow-xl md:p-8">
             <div className="mb-6 flex flex-col items-center text-center">
               <Image
                 alt={`Logo ${settings.siteName}`}
-                className="size-16 rounded-full bg-white object-contain p-0.5 ring-4 ring-brand-50"
-                height={64}
+                className="size-20 object-contain"
+                height={80}
+                preload
                 src={logo?.url || '/images/logo-stai-morowali.jpg'}
-                width={64}
+                width={80}
               />
-              <p className="eyebrow mt-4">{settings.siteName}</p>
+              <p className="eyebrow mt-3">{settings.siteName}</p>
               <p className="mt-1 text-sm text-stone-600">
                 Gunakan username atau email akun pengelola.
               </p>
@@ -50,7 +45,7 @@ export default async function LoginPage() {
             <LoginForm />
           </div>
           <Link
-            className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:text-brand-800"
+            className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-100 hover:text-white"
             href="/"
           >
             <ArrowLeft aria-hidden className="size-4" />
@@ -58,6 +53,6 @@ export default async function LoginPage() {
           </Link>
         </div>
       </div>
-    </>
+    </section>
   )
 }

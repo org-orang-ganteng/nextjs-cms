@@ -17,7 +17,7 @@ Prasyarat: Node.js ≥ 20.18 (disarankan 24), pnpm 10, dan PostgreSQL 15+ **atau
 
 ```bash
 pnpm install
-cp .env.example .env        # isi DATABASE_URL & PAYLOAD_SECRET
+cp .env.example .env        # isi DATABASE_URL & PAYLOAD_SECRET (docker compose up -d db)
 pnpm db:start               # PostgreSQL lokal khusus proyek (port 5433), lihat di bawah
 pnpm seed                   # data awal: admin, 4 prodi, menu, pengaturan, contoh konten
 pnpm dev                    # http://localhost:3000  ·  admin: http://localhost:3000/admin
@@ -112,7 +112,9 @@ src/
   (lihat `Dockerfile`; `BUILD_STANDALONE=true` sudah diset di dalamnya).
 - Env produksi wajib: `DATABASE_URL`, `PAYLOAD_SECRET` (acak, ≥ 32 karakter), `NEXT_PUBLIC_SERVER_URL`.
 - Simpan folder `media/` (unggahan) di volume persisten dan ikutkan dalam backup bersama database.
-- Di belakang Nginx/Cloudflare, teruskan header `X-Real-IP`/`X-Forwarded-For` agar pembatas laju formulir bekerja.
+- Pembatas laju formulir membaca IP dari satu header tepercaya, `TRUSTED_IP_HEADER` (bawaan `x-real-ip`).
+  Di Nginx set `proxy_set_header X-Real-IP $remote_addr;` agar nilai kiriman pengunjung tertimpa;
+  di belakang Cloudflare set `TRUSTED_IP_HEADER=cf-connecting-ip`. Jangan membuka port aplikasi langsung ke internet.
 
 ## Sebelum go-live
 

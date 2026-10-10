@@ -45,7 +45,7 @@ export function HeroView({ block, first }: { block: HeroBlock; first?: boolean }
           />
           <div
             aria-hidden
-            className="absolute inset-0 -z-10 bg-gradient-to-r from-brand-950/90 via-brand-900/75 to-brand-900/30"
+            className="absolute inset-0 -z-10 bg-linear-to-r from-brand-950/90 via-brand-900/75 to-brand-900/30"
           />
         </>
       )}
@@ -138,7 +138,7 @@ function CardGridView({ block }: { block: CardGridBlock }) {
             const content = (
               <>
                 {card.image && (
-                  <div className="relative aspect-[16/10] overflow-hidden">
+                  <div className="relative aspect-16/10 overflow-hidden">
                     <MediaImage
                       className="object-cover"
                       fill

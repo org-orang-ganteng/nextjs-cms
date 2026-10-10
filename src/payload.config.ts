@@ -2,7 +2,6 @@ import { postgresAdapter } from '@payloadcms/db-postgres'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import type { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import { en } from '@payloadcms/translations/languages/en'
 import { id } from '@payloadcms/translations/languages/id'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -41,6 +40,8 @@ export default buildConfig({
         Icon: '/components/admin/Branding#Icon',
         Logo: '/components/admin/Branding#Logo',
       },
+      providers: ['/components/admin/AdminFont#AdminFont'],
+      beforeDashboard: ['/components/admin/DashboardHome#DashboardHome'],
     },
     dateFormat: 'd MMMM yyyy, HH:mm',
     meta: {
@@ -66,7 +67,7 @@ export default buildConfig({
   }),
   i18n: {
     fallbackLanguage: 'id',
-    supportedLanguages: { en, id },
+    supportedLanguages: { id },
   },
   upload: {
     limits: {

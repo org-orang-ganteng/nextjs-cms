@@ -70,7 +70,7 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                 />
                 <div
                   aria-hidden
-                  className="absolute inset-0 -z-10 bg-gradient-to-r from-brand-950/90 via-brand-900/75 to-brand-900/25"
+                  className="absolute inset-0 -z-10 bg-linear-to-r from-brand-950/90 via-brand-900/75 to-brand-900/25"
                 />
               </>
             )}

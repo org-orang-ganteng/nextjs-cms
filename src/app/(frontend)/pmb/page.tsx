@@ -100,7 +100,7 @@ export default async function PmbPage() {
                   <li className="relative" key={item.id ?? index}>
                     <span
                       aria-hidden
-                      className="absolute top-1.5 -left-[1.95rem] size-3.5 rounded-full border-2 border-white bg-brand-600"
+                      className="absolute top-1.5 left-[-1.95rem] size-3.5 rounded-full border-2 border-white bg-brand-600"
                     />
                     <p className="font-semibold text-stone-900">{item.stage}</p>
                     <p className="text-sm text-stone-600">{item.date}</p>

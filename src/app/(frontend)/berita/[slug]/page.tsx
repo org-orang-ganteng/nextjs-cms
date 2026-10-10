@@ -59,7 +59,7 @@ export default async function PostPage({ params }: Props) {
         <div className="mx-auto max-w-3xl">
           {post.coverImage && (
             <figure className="mb-10">
-              <div className="relative aspect-[16/9] overflow-hidden rounded-2xl">
+              <div className="relative aspect-video overflow-hidden rounded-2xl">
                 <MediaImage
                   className="object-cover"
                   fill

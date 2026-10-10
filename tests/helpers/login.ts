@@ -18,10 +18,10 @@ export async function login({
   serverURL = 'http://localhost:3000',
   user,
 }: LoginOptions): Promise<void> {
-  await page.goto(`${serverURL}/admin/login`)
+  await page.goto(`${serverURL}/login`)
 
-  await page.fill('#field-username', user.email)
-  await page.fill('#field-password', user.password)
+  await page.fill('#identifier', user.email)
+  await page.fill('#password', user.password)
   await page.click('button[type="submit"]')
 
   await page.waitForURL(`${serverURL}/admin`)

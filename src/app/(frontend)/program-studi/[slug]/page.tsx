@@ -81,7 +81,7 @@ export default async function ProgramDetailPage({ params }: Props) {
       <div className="container-site grid gap-10 py-12 md:py-16 lg:grid-cols-[1fr_20rem]">
         <div className="min-w-0 space-y-12">
           {program.coverImage && (
-            <div className="relative aspect-[16/8] overflow-hidden rounded-2xl">
+            <div className="relative aspect-16/8 overflow-hidden rounded-2xl">
               <MediaImage
                 className="object-cover"
                 fill

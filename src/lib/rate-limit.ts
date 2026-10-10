@@ -16,12 +16,14 @@ export function isRateLimited(key: string, limit: number, windowMs: number): boo
   return limited
 }
 
-/** IP pengunjung dari header proxy (Cloudflare/Nginx), atau "unknown". */
+/**
+ * IP pengunjung dari satu header yang diisi proxy tepercaya (`TRUSTED_IP_HEADER`,
+ * bawaan `x-real-ip`). Header lain diabaikan karena bisa dipalsukan pengunjung.
+ * Untuk `x-forwarded-for` dipakai entri terakhir, yaitu yang ditambahkan proxy.
+ */
 export function clientIp(headers: Headers): string {
-  return (
-    headers.get('cf-connecting-ip') ||
-    headers.get('x-real-ip') ||
-    headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    'unknown'
-  )
+  const name = (process.env.TRUSTED_IP_HEADER || 'x-real-ip').trim().toLowerCase()
+  const value = headers.get(name)
+  const ip = name === 'x-forwarded-for' ? value?.split(',').at(-1) : value
+  return ip?.trim() || 'unknown'
 }
